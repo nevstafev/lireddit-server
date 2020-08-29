@@ -13,7 +13,7 @@ import { User } from '../entities/User';
 import argon2 from 'argon2';
 
 @InputType()
-class UserNamePasswordInput {
+class UsernamePasswordInput {
   @Field()
   username: string;
   @Field()
@@ -29,7 +29,7 @@ class FieldError {
 }
 
 @ObjectType()
-class UserResonse {
+class UserResponse {
   @Field(() => [FieldError], { nullable: true })
   errors?: FieldError[];
 
@@ -49,11 +49,11 @@ export class UserResolver {
     return user;
   }
 
-  @Mutation(() => UserResonse)
+  @Mutation(() => UserResponse)
   async register(
-    @Arg('options') options: UserNamePasswordInput,
+    @Arg('options') options: UsernamePasswordInput,
     @Ctx() { req, em }: MyContext
-  ): Promise<UserResonse> {
+  ): Promise<UserResponse> {
     if (options.username.length <= 2) {
       return {
         errors: [
@@ -97,11 +97,11 @@ export class UserResolver {
     return { user };
   }
 
-  @Mutation(() => UserResonse, { nullable: true })
+  @Mutation(() => UserResponse)
   async login(
-    @Arg('options') options: UserNamePasswordInput,
+    @Arg('options') options: UsernamePasswordInput,
     @Ctx() { em, req }: MyContext
-  ): Promise<UserResonse> {
+  ): Promise<UserResponse> {
     const user = await em.findOne(User, { username: options.username });
     if (!user) {
       return {
