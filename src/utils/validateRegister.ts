@@ -1,4 +1,3 @@
-import { utimes } from 'fs';
 import { UsernamePasswordInput } from 'src/resolvers/UsernamePasswordInput';
 export const validateRegister = (options: UsernamePasswordInput) => {
   if (options.username.length <= 2) {
@@ -19,11 +18,11 @@ export const validateRegister = (options: UsernamePasswordInput) => {
     ];
   }
 
-  if (options.password.length <= 3) {
+  if (options.password.length <= 2) {
     return [
       {
         field: 'password',
-        message: "length can't be less than 4 symbols",
+        message: "length can't be less than 3 symbols",
       },
     ];
   }
