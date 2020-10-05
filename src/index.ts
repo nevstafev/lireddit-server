@@ -24,20 +24,17 @@ const main = async () => {
     type: 'postgres',
     url: process.env.DATABASE_URL,
     logging: true,
-    // synchronize: true,
     entities: [Post, User, Updoot],
     migrations: [path.join(__dirname, './migrations/*')],
   });
 
   await conn.runMigrations();
 
-  // await Post.delete({});
-
   const app = express();
 
   const RedisStore = connectRedis(session);
   const redis = new Redis(process.env.REDIS_URL);
-  app.set('proxy', 1);
+  app.set('trust proxy', 1);
   app.use(
     cors({
       origin: process.env.CORS_ORIGN,
@@ -57,7 +54,7 @@ const main = async () => {
         httpOnly: true,
         sameSite: 'lax',
         secure: __propd__,
-        domain: __propd__ ? '.gdatagrf.com' : undefined,
+        domain: __propd__ ? 'nevstafev.ru' : undefined,
       },
       secret: process.env.SESSION_SECRET,
       resave: false,
